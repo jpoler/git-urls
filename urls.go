@@ -90,7 +90,7 @@ func ParseScp(rawurl string) (u *url.URL, err error) {
 		u.Scheme = "ssh"
 		u.User = url.User(strings.TrimRight(match[1], "@"))
 		u.Host = match[2]
-		u.Path = fmt.Sprintf("/%s", match[3])
+		u.Path = fmt.Sprintf("/%s", strings.TrimLeft(match[3], "/"))
 	} else {
 		err = fmt.Errorf("no scp URL found in %q", rawurl)
 	}
@@ -117,7 +117,7 @@ type TransportSet struct {
 
 // NewTransportSet returns a TransportSet with the items keys mapped
 // to empty struct values.
-func NewTransportSet(items... string) *TransportSet {
+func NewTransportSet(items ...string) *TransportSet {
 	t := &TransportSet{
 		Transports: map[string]struct{}{},
 	}
